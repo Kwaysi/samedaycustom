@@ -1,12 +1,14 @@
 import axios from 'axios';
 import WebFont from 'webfontloader';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { ReactComponent as Back } from 'src/assets/icons/back.svg';
-import { ReactComponent as Close } from 'src/assets/icons/close.svg';
-import { ReactComponent as Clock } from 'src/assets/icons/clock.svg';
 
 import { AppData } from 'src/types';
 import useData from 'src/hooks/useData';
+import useQuery from 'src/hooks/useQuery';
+import { ReactComponent as Back } from 'src/assets/icons/back.svg';
+import { ReactComponent as Close } from 'src/assets/icons/close.svg';
+import { ReactComponent as Clock } from 'src/assets/icons/clock.svg';
 
 import Button from './common/Button';
 
@@ -14,7 +16,7 @@ export default function Text() {
 	const {
 		dispatch,
 		data: {
-			show,
+			// show,
 			designer,
 			designer: {
 				loadedFonts,
@@ -22,13 +24,14 @@ export default function Text() {
 			}
 		}
 	} = useData<AppData>();
+	const push = useNavigate();
+	const fontPanel = !!useQuery().get('font');
 	const [fonts, setFonts] = useState<any[]>([]);
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		const fontList = localStorage.getItem('fonts');
 		if (fontList === null) {
-			console.log(process.env.REACT_APP_GOOGLEFONTS_URL!, 'env');
 			axios
 				.get(process.env.REACT_APP_GOOGLEFONTS_URL!)
 				.then(({ data }) => {
@@ -47,7 +50,7 @@ export default function Text() {
 			addText!(value, { fontSize: 16 });
 		}
 		inputRef.current!.value = '';
-		dispatch({ show: 'font' });
+		push('/text?font=true');
 	};
 
 	const loadFont = (e: any) => {
@@ -87,16 +90,15 @@ export default function Text() {
 
 	return (
 		<div className='space-y-4'>
-			{show === 'text' && (
+			{!fontPanel && (
 				<>
 					<div className='flex items-center bg-grey-100 py-2 px-4'>
 						<h1 className='flex-grow text-center uppercase text-sm text-grey-600 font-bold'>
 							Add text
 						</h1>
-						<Close
-							className='cursor-pointer'
-							onClick={() => dispatch({ panel: 'home' })}
-						/>
+						<Link to='/'>
+							<Close className='cursor-pointer' />
+						</Link>
 					</div>
 					<div className='p-4 flex flex-col items-end'>
 						<input
@@ -115,20 +117,18 @@ export default function Text() {
 					</div>
 				</>
 			)}
-			{show === 'font' && (
+			{fontPanel && (
 				<>
 					<div className='flex items-center bg-grey-100 py-2 px-4'>
-						<Back
-							className='cursor-pointer'
-							onClick={() => dispatch({ show: 'text' })}
-						/>
+						<Link to='/text'>
+							<Back className='cursor-pointer' />
+						</Link>
 						<h1 className='flex-grow text-center uppercase text-sm text-grey-600 font-bold'>
 							Change font
 						</h1>
-						<Close
-							className='cursor-pointer'
-							onClick={() => dispatch({ panel: 'home' })}
-						/>
+						<Link to='/'>
+							<Close className='cursor-pointer' />
+						</Link>
 					</div>
 					<div className='p-4'>
 						<input

@@ -118,7 +118,7 @@ export default function useData<T extends object>() {
 }
 
 export function connectData<T extends object>(Comp: any) {
-	const ConnectData = (props: object) => {
+	const ConnectData = (props: { [key: string]: any }) => {
 		const { data, dispatch } = useData<T>();
 
 		return (

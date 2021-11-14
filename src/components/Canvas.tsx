@@ -1,3 +1,4 @@
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Component, createRef } from 'react';
 
 import fabric from 'src/Fabric';
@@ -11,12 +12,16 @@ type State = {
 	activePart: number;
 };
 
-class Canvas extends Component<ConnectProps<AppData>, State> {
+interface Props extends ConnectProps<AppData> {
+	push: NavigateFunction;
+}
+
+class Canvas extends Component<Props, State> {
 	objects = createRef<any[]>();
 
 	canvas = createRef<fabric.Canvas>();
 
-	constructor(props: ConnectProps<AppData>) {
+	constructor(props: Props) {
 		super(props);
 		this.state = {
 			activePart: 0
@@ -61,19 +66,19 @@ class Canvas extends Component<ConnectProps<AppData>, State> {
 
 	addText(text: string, o: ObjectOptions) {
 		const {
-			dispatch,
 			data: {
 				designer: { objectOptions }
-			}
+			},
+			push
 		} = this.props;
 		const txt = new fabric.Text(text, { ...objectOptions, ...o });
 
 		txt.on('selected', (_e) => {
-			dispatch({ panel: 'text', show: 'font' });
+			push('/text?font=true');
 		});
 
 		txt.on('deselected', (_e) => {
-			dispatch({ panel: 'text', show: 'text' });
+			push('/text');
 		});
 
 		this.canvas.current!.add(txt);
@@ -162,4 +167,9 @@ class Canvas extends Component<ConnectProps<AppData>, State> {
 	}
 }
 
-export default connectData(Canvas);
+const RouterCanvas = (props: ConnectProps<AppData>) => {
+	const push = useNavigate();
+	return <Canvas {...props} push={push} />;
+};
+
+export default connectData(RouterCanvas);

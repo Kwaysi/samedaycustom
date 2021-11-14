@@ -1,3 +1,5 @@
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import { AppData } from 'src/types';
 
 import data from './store';
@@ -10,12 +12,14 @@ import { DataProvider } from './hooks/useData';
 function App() {
 	return (
 		<DataProvider<AppData> init={data}>
-			<div className='App'>
-				<Header />
-				<SideBar />
-				<Footer />
-				<Canvas />
-			</div>
+			<Router>
+				<div className='App'>
+					<Header />
+					<SideBar />
+					<Footer />
+					<Canvas />
+				</div>
+			</Router>
 		</DataProvider>
 	);
 }

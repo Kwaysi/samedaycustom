@@ -1,5 +1,5 @@
-import { AppData } from 'src/types';
-import useData from 'src/hooks/useData';
+import { Routes, Route, Link, useMatch } from 'react-router-dom';
+
 import { ReactComponent as Art } from 'src/assets/icons/svg_art.svg';
 import { ReactComponent as Color } from 'src/assets/icons/svg_color.svg';
 import { ReactComponent as Notes } from 'src/assets/icons/svg_notes.svg';
@@ -12,66 +12,65 @@ import Home from './Home';
 import Upload from './Upload';
 
 export default function SideBar() {
-	const {
-		dispatch,
-		data: { panel }
-	} = useData<AppData>();
+	const text = useMatch('/text');
+	const upload = useMatch('/upload');
 
 	return (
 		<>
-			<div className='fixed w-24 bg-blue h-screen text-white text-center space-y-4 pt-20 z-20'>
-				<div
-					className={`flex flex-col items-center px-4 cursor-pointer ${
-						panel === 'text' && 'bg-white text-blue py-2'
-					}`}
-					onClick={() => dispatch({ panel: 'text', show: 'text' })}
-				>
-					<TextIcon className={`icon ${panel === 'text' && 'text-blue'}`} />
-					<p className='text-sm'>Add Text</p>
-				</div>
-				<div
-					className='flex flex-col items-center px-4 cursor-pointer'
-					onClick={() => dispatch({ panel: 'home' })}
-				>
-					<Art className='icon' />
-					<p className='text-sm'>Use Template</p>
-				</div>
-				<div
-					className={`flex flex-col items-center px-4 cursor-pointer ${
-						panel === 'design' && 'bg-white text-blue py-2'
-					}`}
-					onClick={() => dispatch({ panel: 'design' })}
-				>
-					<UploadIcon className={`icon ${panel === 'design' && 'text-blue'}`} />
-					<p className='text-sm'>Upload design</p>
-				</div>
-				<div
-					className='flex flex-col items-center px-4 cursor-pointer'
-					onClick={() => dispatch({ panel: 'home' })}
-				>
-					<Color className='icon' />
-					<p className='text-sm'>Product colors</p>
-				</div>
-				<div
-					className='flex flex-col items-center cursor-pointer'
-					onClick={() => dispatch({ panel: 'home' })}
-				>
-					<Names className='icon' />
-					<p className='text-sm'>Add team names</p>
-				</div>
-				<div
-					className='flex flex-col items-center px-4 cursor-pointer'
-					onClick={() => dispatch({ panel: 'home' })}
-				>
-					<Notes className='icon' />
-					<p className='text-sm'>Add notes</p>
-				</div>
+			<div className='fixed w-24 bg-blue h-screen text-white text-center pt-20 z-20'>
+				<Link to='/text'>
+					<div
+						className={`flex flex-col items-center px-4 my-2 cursor-pointer ${
+							text && 'bg-white text-blue py-2'
+						}`}
+					>
+						<TextIcon className={`icon ${text && 'text-blue'}`} />
+						<p className='text-sm'>Add Text</p>
+					</div>
+				</Link>
+				<Link to='/'>
+					<div className='flex flex-col items-center px-4 my-2 cursor-pointer'>
+						<Art className='icon' />
+						<p className='text-sm'>Use Template</p>
+					</div>
+				</Link>
+				<Link to='/upload'>
+					<div
+						className={`flex flex-col items-center px-4 my-2 cursor-pointer ${
+							upload && 'bg-white text-blue py-2'
+						}`}
+					>
+						<UploadIcon className={`icon ${upload && 'text-blue'}`} />
+						<p className='text-sm'>Upload design</p>
+					</div>
+				</Link>
+				<Link to='/'>
+					<div className='flex flex-col items-center px-4 my-2 cursor-pointer'>
+						<Color className='icon' />
+						<p className='text-sm'>Product colors</p>
+					</div>
+				</Link>
+				<Link to='/'>
+					<div className='flex flex-col items-center cursor-pointer'>
+						<Names className='icon' />
+						<p className='text-sm'>Add team names</p>
+					</div>
+				</Link>
+				<Link to='/'>
+					<div className='flex flex-col items-center px-4 my-2 cursor-pointer'>
+						<Notes className='icon' />
+						<p className='text-sm'>Add notes</p>
+					</div>
+				</Link>
 			</div>
+
 			<div className='w-90 fixed h-screen left-24 bg-white z-10 pt-16'>
 				<div className='relative'>
-					{panel === 'home' && <Home />}
-					{panel === 'text' && <Text />}
-					{panel === 'design' && <Upload />}
+					<Routes>
+						<Route path='/text' element={<Text />} />
+						<Route path='/upload' element={<Upload />} />
+						<Route path='/' element={<Home />} />
+					</Routes>
 				</div>
 			</div>
 		</>

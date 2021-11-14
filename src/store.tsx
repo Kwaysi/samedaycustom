@@ -1,7 +1,6 @@
 import { AppData } from './types';
 
 const data: AppData = {
-	panel: 'home',
 	designer: {
 		loadedFonts: [],
 		objectOptions: {
@@ -11,7 +10,6 @@ const data: AppData = {
 		},
 		methods: {}
 	},
-	show: 'text',
 	product: {
 		name: 'Gildan Unisex T-shirt',
 		color: 'white',

@@ -1,8 +1,10 @@
+import { Link } from 'react-router-dom';
 import { ChangeEvent, useEffect, useRef } from 'react';
+
+import { AppData } from 'src/types';
+import useData from 'src/hooks/useData';
 import { ReactComponent as Close } from 'src/assets/icons/close.svg';
 import { ReactComponent as Cloud } from 'src/assets/icons/cloud.svg';
-import useData from 'src/hooks/useData';
-import { AppData } from 'src/types';
 
 import Tag from './common/Tag';
 
@@ -22,7 +24,6 @@ const accept = ['image/jpeg', 'image/png'];
 
 export default function Upload() {
 	const {
-		dispatch,
 		data: {
 			designer: {
 				methods: { addImage }
@@ -87,10 +88,9 @@ export default function Upload() {
 				<h1 className='flex-grow text-center uppercase text-sm text-grey-600 font-bold'>
 					Upload your design
 				</h1>
-				<Close
-					className='cursor-pointer'
-					onClick={() => dispatch({ panel: 'home' })}
-				/>
+				<Link to='/'>
+					<Close className='cursor-pointer' />
+				</Link>
 			</div>
 			<div className='px-4 space-y-5'>
 				<div>

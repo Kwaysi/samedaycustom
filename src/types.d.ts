@@ -25,15 +25,6 @@ type ObjectOptions = {
 };
 
 export type AppData = {
-	panel:
-		| 'home'
-		| 'text'
-		| 'notes'
-		| 'design'
-		| 'colors'
-		| 'template'
-		| 'teamnames';
-	show: string;
 	designer: {
 		loadedFonts: string[];
 		objectOptions: ObjectOptions;
