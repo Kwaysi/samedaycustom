@@ -21,7 +21,8 @@ export default function Text() {
 			designer,
 			designer: {
 				loadedFonts,
-				methods: { addText, updateActiveItem, updateText }
+				methods: { addText, updateActiveItem, updateText },
+				objectOptions
 			}
 		}
 	} = useData<AppData>();
@@ -49,11 +50,11 @@ export default function Text() {
 
 	const addToDesign = () => {
 		const { value } = inputRef.current!;
+		inputRef.current!.value = '';
 		if (value) {
 			addText!(value, { fontSize: 16 });
+			push(`/text?panel=edit&text=${value}&family=${objectOptions.fontFamily}`);
 		}
-		inputRef.current!.value = '';
-		push('/text?font=true');
 	};
 
 	const loadFont = (e: any) => {
