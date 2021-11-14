@@ -28,6 +28,7 @@ class Canvas extends Component<Props, State> {
 		};
 		this.addText = this.addText.bind(this);
 		this.addImage = this.addImage.bind(this);
+		this.updateText = this.updateText.bind(this);
 		this.updateActiveItem = this.updateActiveItem.bind(this);
 	}
 
@@ -45,6 +46,7 @@ class Canvas extends Component<Props, State> {
 				methods: {
 					addText: this.addText,
 					addImage: this.addImage,
+					updateText: this.updateText,
 					updateActiveItem: this.updateActiveItem
 				}
 			}
@@ -73,8 +75,14 @@ class Canvas extends Component<Props, State> {
 		} = this.props;
 		const txt = new fabric.Text(text, { ...objectOptions, ...o });
 
-		txt.on('selected', (_e) => {
-			push('/text?font=true');
+		txt.on('selected', (e) => {
+			push(
+				// @ts-ignore
+				`/text?panel=edit&text=${e.target?.get('text')}&family=${e.target?.get(
+					// @ts-ignore
+					'fontFamily'
+				)}`
+			);
 		});
 
 		txt.on('deselected', (_e) => {
@@ -122,6 +130,16 @@ class Canvas extends Component<Props, State> {
 			});
 			this.canvas.current!.renderAll();
 		}
+	}
+
+	updateText(text: string) {
+		const active = this.canvas.current!.getActiveObject();
+
+		if (active && active.type === 'text') {
+			// @ts-ignore
+			active.set('text', text);
+		}
+		this.canvas.current!.renderAll();
 	}
 
 	render() {

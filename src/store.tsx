@@ -6,7 +6,8 @@ const data: AppData = {
 		objectOptions: {
 			top: 20,
 			left: 20,
-			fill: '#102A43'
+			fill: '#102A43',
+			fontFamily: `'Inter'`
 		},
 		methods: {}
 	},

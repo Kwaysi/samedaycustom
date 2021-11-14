@@ -9,6 +9,7 @@ import useQuery from 'src/hooks/useQuery';
 import { ReactComponent as Back } from 'src/assets/icons/back.svg';
 import { ReactComponent as Close } from 'src/assets/icons/close.svg';
 import { ReactComponent as Clock } from 'src/assets/icons/clock.svg';
+import { ReactComponent as Down } from 'src/assets/icons/chevron-down.svg';
 
 import Button from './common/Button';
 
@@ -20,12 +21,14 @@ export default function Text() {
 			designer,
 			designer: {
 				loadedFonts,
-				methods: { addText, updateActiveItem }
+				methods: { addText, updateActiveItem, updateText }
 			}
 		}
 	} = useData<AppData>();
 	const push = useNavigate();
-	const fontPanel = !!useQuery().get('font');
+	const text = useQuery().get('text');
+	const family = useQuery().get('family');
+	const panel = useQuery().get('panel');
 	const [fonts, setFonts] = useState<any[]>([]);
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -54,26 +57,7 @@ export default function Text() {
 	};
 
 	const loadFont = (e: any) => {
-		if (!loadedFonts.includes(e.family)) {
-			WebFont.load({
-				google: {
-					families: [...loadedFonts, e.family]
-				},
-				active: () => {
-					dispatch({
-						designer: {
-							...designer,
-							loadedFonts: [...loadedFonts, e.family],
-							objectOptions: {
-								...designer.objectOptions,
-								fontFamily: e.family
-							}
-						}
-					});
-					updateActiveItem!({ fontFamily: e.family });
-				}
-			});
-		} else {
+		const update = () => {
 			dispatch({
 				designer: {
 					...designer,
@@ -85,12 +69,23 @@ export default function Text() {
 				}
 			});
 			updateActiveItem!({ fontFamily: e.family });
+		};
+
+		if (!loadedFonts.includes(e.family)) {
+			WebFont.load({
+				google: {
+					families: [...loadedFonts, e.family]
+				},
+				active: update
+			});
+		} else {
+			update();
 		}
 	};
 
 	return (
-		<div className='space-y-4'>
-			{!fontPanel && (
+		<div>
+			{!panel && (
 				<>
 					<div className='flex items-center bg-grey-100 py-2 px-4'>
 						<h1 className='flex-grow text-center uppercase text-sm text-grey-600 font-bold'>
@@ -117,7 +112,47 @@ export default function Text() {
 					</div>
 				</>
 			)}
-			{fontPanel && (
+			{panel === 'edit' && (
+				<>
+					<div className='flex items-center bg-grey-100 py-2 px-4'>
+						<Link to='/text'>
+							<Back className='cursor-pointer' />
+						</Link>
+						<h1 className='flex-grow text-center uppercase text-sm text-grey-600 font-bold'>
+							Edit text
+						</h1>
+						<Link to='/'>
+							<Close className='cursor-pointer' />
+						</Link>
+					</div>
+					<div className='p-4'>
+						<input
+							type='text'
+							defaultValue={text!}
+							placeholder='Enter text here'
+							onChange={(e) => {
+								updateText!(e.target.value);
+							}}
+							className='w-full rounded p-3 border border-grey-400'
+						/>
+					</div>
+					<div className='flex items-center justify-between px-4  border-b border-grey-400 '>
+						<span className='text-sm text-black py-2'>Font</span>
+						<Link to='/text?panel=font'>
+							<span
+								className='text-black text-xl cursor-pointer py-4'
+								style={{
+									fontFamily: `${family}, 'Inter', sans-serif`
+								}}
+							>
+								{family?.replaceAll(`'`, '')}
+								<Down className='ml-2 inline' />
+							</span>
+						</Link>
+					</div>
+				</>
+			)}
+			{panel === 'font' && (
 				<>
 					<div className='flex items-center bg-grey-100 py-2 px-4'>
 						<Link to='/text'>
@@ -136,7 +171,7 @@ export default function Text() {
 							placeholder='Enter text here'
 							className='w-full rounded p-3 border border-grey-400'
 						/>
-						<div className='w-full flex items-center justify-between'>
+						<div className='w-full flex items-center justify-between my-2'>
 							<span className='text-blue'>View all categories</span>
 							<span className='text-blue flex items-center'>
 								<Clock /> Recently used fonts

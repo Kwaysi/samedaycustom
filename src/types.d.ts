@@ -29,6 +29,7 @@ export type AppData = {
 		loadedFonts: string[];
 		objectOptions: ObjectOptions;
 		methods: {
+			updateText?: (t: string) => void;
 			updateActiveItem?: (o: ObjectOptions) => void;
 			addText?: (t: string, o: ObjectOptions) => void;
 			addImage?: (t: string | string[], o: ObjectOptions) => void;
