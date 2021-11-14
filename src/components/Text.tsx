@@ -183,7 +183,7 @@ export default function Text() {
 					</div>
 
 					<div
-						className='overflow-y-scroll divide-y divide-grey-100'
+						className='overflow-y-scroll divide-y divide-grey-400'
 						style={{
 							maxHeight: '60vh'
 						}}
