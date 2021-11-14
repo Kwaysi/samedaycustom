@@ -18,7 +18,7 @@ const variants = {
 	secondary: {
 		bg: 'blue-light',
 		color: 'blue',
-		border: 'none'
+		border: 'blue-light'
 	},
 	outline: {
 		bg: 'white',

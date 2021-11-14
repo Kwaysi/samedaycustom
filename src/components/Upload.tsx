@@ -126,16 +126,13 @@ export default function Upload() {
 					<h2 className='text-sm text-black font-medium'>
 						Accepted file types
 					</h2>
-					<div className='flex flex-wrap space-x-2 '>
+					<div className='flex flex-wrap'>
 						{formats.map((e) => (
-							<Tag
-								key={e}
-								className='my-1 text-xs uppercase'
-								color='grey-800'
-								inverse
-							>
-								{e}
-							</Tag>
+							<>
+								<div className='px-2 bg-grey rounded my-1 mr-2'>
+									<span className='text-grey-800 uppercase text-sm'>{e}</span>
+								</div>
+							</>
 						))}
 					</div>
 					<p className='text-sm text-grey-600'>
