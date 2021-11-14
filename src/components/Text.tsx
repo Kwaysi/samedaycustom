@@ -34,17 +34,32 @@ export default function Text() {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
+		let fontCache: any;
 		const fontList = localStorage.getItem('fonts');
 		if (fontList === null) {
 			axios
 				.get(process.env.REACT_APP_GOOGLEFONTS_URL!)
 				.then(({ data }) => {
-					setFonts(data.items);
-					localStorage.setItem('fonts', JSON.stringify(data.items));
+					fontCache = data.items.slice(0, 100);
+					setFonts(fontCache);
+					localStorage.setItem('fonts', JSON.stringify(fontCache));
+					const families = fontCache.map((e: any) => e.family);
+					WebFont.load({
+						google: {
+							families
+						}
+					});
 				})
 				.catch(() => {});
 		} else {
+			fontCache = JSON.parse(fontList);
 			setFonts(JSON.parse(fontList));
+			const families = fontCache.map((e: any) => e.family);
+			WebFont.load({
+				google: {
+					families
+				}
+			});
 		}
 	}, []);
 
@@ -58,30 +73,17 @@ export default function Text() {
 	};
 
 	const loadFont = (e: any) => {
-		const update = () => {
-			dispatch({
-				designer: {
-					...designer,
-					loadedFonts: [...loadedFonts, e.family],
-					objectOptions: {
-						...designer.objectOptions,
-						fontFamily: e.family
-					}
+		dispatch({
+			designer: {
+				...designer,
+				loadedFonts: [...loadedFonts, e.family],
+				objectOptions: {
+					...designer.objectOptions,
+					fontFamily: e.family
 				}
-			});
-			updateActiveItem!({ fontFamily: e.family });
-		};
-
-		if (!loadedFonts.includes(e.family)) {
-			WebFont.load({
-				google: {
-					families: [...loadedFonts, e.family]
-				},
-				active: update
-			});
-		} else {
-			update();
-		}
+			}
+		});
+		updateActiveItem!({ fontFamily: e.family });
 	};
 
 	return (
@@ -139,7 +141,7 @@ export default function Text() {
 					</div>
 					<div className='flex items-center justify-between px-4  border-b border-grey-400 '>
 						<span className='text-sm text-black py-2'>Font</span>
-						<Link to='/text?panel=font'>
+						<Link to={`/text?panel=font&text=${text}`}>
 							<span
 								className='text-black text-xl cursor-pointer py-4'
 								style={{
@@ -181,7 +183,7 @@ export default function Text() {
 					</div>
 
 					<div
-						className='overflow-y-scroll divide-y divide-grey-400'
+						className='overflow-y-scroll divide-y divide-grey-100'
 						style={{
 							maxHeight: '60vh'
 						}}
@@ -190,12 +192,17 @@ export default function Text() {
 							<div
 								key={i}
 								onClick={() => loadFont(e)}
-								style={{
-									fontFamily: `'${e.family}', 'Inter', sans-serif`
-								}}
 								className='py-2 text-center cursor-pointer hover:bg-blue-100'
 							>
-								{e.family}
+								<div
+									className='text-xl'
+									style={{
+										fontFamily: `'${e.family}', 'Inter', sans-serif`
+									}}
+								>
+									{text}
+								</div>
+								<p className='text-sm text-grey-600'>{e.family}</p>
 							</div>
 						))}
 					</div>
