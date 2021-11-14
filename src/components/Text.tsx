@@ -20,7 +20,6 @@ export default function Text() {
 			// show,
 			designer,
 			designer: {
-				loadedFonts,
 				methods: { addText, updateActiveItem, updateText },
 				objectOptions
 			}
@@ -76,7 +75,6 @@ export default function Text() {
 		dispatch({
 			designer: {
 				...designer,
-				loadedFonts: [...loadedFonts, e.family],
 				objectOptions: {
 					...designer.objectOptions,
 					fontFamily: e.family

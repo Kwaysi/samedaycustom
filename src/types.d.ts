@@ -26,7 +26,6 @@ type ObjectOptions = {
 
 export type AppData = {
 	designer: {
-		loadedFonts: string[];
 		objectOptions: ObjectOptions;
 		methods: {
 			updateText?: (t: string) => void;

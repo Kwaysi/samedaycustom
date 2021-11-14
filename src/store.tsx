@@ -2,7 +2,6 @@ import { AppData } from './types';
 
 const data: AppData = {
 	designer: {
-		loadedFonts: [],
 		objectOptions: {
 			top: 20,
 			left: 20,
