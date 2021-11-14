@@ -19,7 +19,10 @@ export default function Footer() {
 	return (
 		<div className='fixed w-screen bottom-0 bg-white px-6 py-2 flex justify-between items-center z-30'>
 			<div className='flex items-center space-x-4 divide-x-2'>
-				<Button variant='secondary'>
+				<Button
+					variant='secondary'
+					className='bg-blue-light border-blue-light text-blue'
+				>
 					<Add />
 					<span className='ml-2'>Add product</span>
 				</Button>
@@ -44,7 +47,10 @@ export default function Footer() {
 				<Button variant='outline'>
 					<Share />
 				</Button>
-				<Button variant='secondary'>
+				<Button
+					variant='secondary'
+					className='bg-blue-light border-blue-light text-blue'
+				>
 					<Save />
 					<span className='ml-2'>Save</span>
 				</Button>

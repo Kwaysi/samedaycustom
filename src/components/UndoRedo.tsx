@@ -9,8 +9,8 @@ export default function UndoRedo() {
 				<p className='text-sm text-grey-600'>Undo</p>
 			</div>
 			<div className='flex flex-col items-center p-4'>
-				<Redo className='icon text-grey-600' />
-				<p className='text-sm text-grey-600'>Redo</p>
+				<Redo className='icon text-grey-400' />
+				<p className='text-sm text-grey-400'>Redo</p>
 			</div>
 		</div>
 	);

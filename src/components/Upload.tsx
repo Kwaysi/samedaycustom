@@ -6,8 +6,6 @@ import useData from 'src/hooks/useData';
 import { ReactComponent as Close } from 'src/assets/icons/close.svg';
 import { ReactComponent as Cloud } from 'src/assets/icons/cloud.svg';
 
-import Tag from './common/Tag';
-
 const formats = [
 	'.png',
 	'.jpeg',
