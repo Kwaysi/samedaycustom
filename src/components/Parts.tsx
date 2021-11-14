@@ -23,8 +23,8 @@ export default function Parts({ zoomIn, zoomOut, setPart, active }: Props) {
 				{data.map((e, i) => (
 					<div
 						key={e.name}
-						className={`rounded-lg text-center flex flex-col items-center py-2 ${
-							active === i && 'border-2 border-blue'
+						className={`rounded-lg text-center border-2 hover:border-blue-light cursor-pointer flex flex-col items-center py-2 ${
+							active === i ? 'border-blue' : 'border-white'
 						}`}
 						onClick={setPart}
 					>

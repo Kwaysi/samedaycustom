@@ -27,8 +27,8 @@ export default function Text() {
 
 	useEffect(() => {
 		const fontList = localStorage.getItem('fonts');
-		console.log(fontList);
 		if (fontList === null) {
+			console.log(process.env.REACT_APP_GOOGLEFONTS_URL!, 'env');
 			axios
 				.get(process.env.REACT_APP_GOOGLEFONTS_URL!)
 				.then(({ data }) => {
